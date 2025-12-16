@@ -2,6 +2,10 @@
 
 namespace App\Http\Middleware;
 
+/**
+ * RedirectIfAuthenticated middleware (lightweight)
+ */
+
 use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;

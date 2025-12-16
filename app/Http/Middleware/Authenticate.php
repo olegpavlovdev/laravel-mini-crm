@@ -1,6 +1,11 @@
 <?php
 namespace App\Http\Middleware;
 
+/**
+ * Minimal Authenticate middleware used by app routes.
+ * Kept intentionally small for the demo project.
+ */
+
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
 
