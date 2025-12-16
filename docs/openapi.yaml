@@ -1,0 +1,229 @@
+openapi: 3.0.3
+info:
+  title: Mini CRM API
+  version: 1.0.0
+  description: |
+    API for the Mini CRM project. This OpenAPI document describes the public endpoints used to create tickets and fetch basic statistics. Rate limiting is applied to the ticket creation endpoint.
+servers:
+  - url: /
+paths:
+  /api/tickets:
+    post:
+      summary: Create a ticket
+      description: |
+        Create a new ticket. Accepts multipart/form-data for file attachments. This endpoint is rate-limited by `check.ticket.rate` middleware and returns 429 when the limit is exceeded.
+        Rate limiting policy: no more than 1 request per second from the same phone number or email address.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                  pattern: '^\\+[1-9]\\d{1,14}$'
+                subject:
+                  type: string
+                message:
+                  type: string
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+              required:
+                - name
+                - email
+                - phone
+                - subject
+                - message
+            examples:
+              standard:
+                $ref: '#/components/examples/CreateTicketExample'
+      responses:
+        '200':
+          description: Ticket created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+              examples:
+                success:
+                  $ref: '#/components/examples/TicketResponseExample'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+              examples:
+                invalid:
+                  $ref: '#/components/examples/ValidationErrorExample'
+        '429':
+          description: Too many requests (rate limited)
+          content:
+            application/json:
+              examples:
+                rate_limited:
+                  $ref: '#/components/examples/RateLimitExample'
+  /api/tickets/statistics:
+    get:
+      summary: Tickets statistics
+      description: Returns counts of tickets created in the last day, week, and month.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Ticket counts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  day:
+                    type: integer
+                    example: 3
+                  week:
+                    type: integer
+                    example: 10
+                  month:
+                    type: integer
+                    example: 23
+          '401':
+            description: Unauthenticated (missing or invalid token)
+            content:
+              application/json:
+                examples:
+                  unauthenticated:
+                    value:
+                      message: "Unauthenticated."
+components:
+  schemas:
+    Ticket:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+        customer:
+          $ref: '#/components/schemas/Customer'
+        subject:
+          type: string
+          example: "Support request"
+        message:
+          type: string
+          example: "I have a problem with..."
+        status:
+          type: string
+          example: NEW
+        manager_response_date:
+          type: string
+          format: date-time
+          nullable: true
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-12-16T12:34:56Z"
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 7
+        name:
+          type: string
+          example: "John Doe"
+        phone:
+          type: string
+          example: "+12345678901"
+        email:
+          type: string
+          format: email
+          example: "john@example.com"
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        file_name:
+          type: string
+          example: "doc.pdf"
+        mime_type:
+          type: string
+          example: "application/pdf"
+        size:
+          type: integer
+          example: 102400
+        url:
+          type: string
+          format: uri
+          example: "https://cdn.example.com/attachments/doc.pdf"
+    ValidationError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "The given data was invalid."
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+              example: "This field is required."
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  examples:
+    CreateTicketExample:
+      summary: Example multipart/form-data payload
+      value:
+        name: "John Doe"
+        email: "john@example.com"
+        phone: "+12345678901"
+        subject: "Support request"
+        message: "I have a problem with..."
+        files:
+          - "<binary file>"
+    TicketResponseExample:
+      value:
+        id: 42
+        customer:
+          id: 7
+          name: "John Doe"
+          phone: "+12345678901"
+          email: "john@example.com"
+        subject: "Support request"
+        message: "I have a problem with..."
+        status: NEW
+        manager_response_date: null
+        created_at: "2025-12-16T12:34:56Z"
+        attachments: []
+    ValidationErrorExample:
+      value:
+        message: "The given data was invalid."
+        errors:
+          email: ["The email field is required."]
+    RateLimitExample:
+      value:
+        message: "Too many requests. Maximum 1 request per second."
+
+x-info:
+  generatedBy: "GitHub Copilot (automated)"
+  note: "This file was generated from the codebase (controllers, request validation, resources). Review examples and add authentication/security schemes if needed."

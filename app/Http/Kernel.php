@@ -7,7 +7,6 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 class Kernel extends HttpKernel
 {
     protected $middleware = [
-        // global middleware (empty for minimal project)
     ];
 
     protected $middlewareGroups = [
@@ -29,7 +28,6 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'check.ticket.rate' => \App\Http\Middleware\CheckTicketRate::class,
-        // Spatie role middleware: ensure correct namespace (note: singular 'Middleware' in vendor)
         'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     ];

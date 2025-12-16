@@ -10,10 +10,8 @@ class RoleAndUserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create manager role
         $manager = Role::firstOrCreate(['name' => 'manager']);
 
-        // Create a manager user
         $user = User::firstOrCreate(
             ['email' => 'manager@example.com'],
             [

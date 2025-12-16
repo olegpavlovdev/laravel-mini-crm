@@ -4,7 +4,12 @@ if (!isset($errors)) {
 }
 @endphp
 
-{{-- Defensive guard added to avoid undefined $errors on some views (see commit history) --}}
+@php
+// Defensive guard to ensure $errors exists
+if (!isset($errors)) {
+    $errors = new \Illuminate\Support\ViewErrorBag();
+}
+@endphp
 
 @extends('layouts.app')
 

@@ -1,17 +1,6 @@
 <?php
 
 return [
-    /*
-    |--------------------------------------------------------------------------
-    | Permission Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Minimal configuration to allow using spatie/laravel-permission in this
-    | test project. Run `php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"`
-    | to publish the full configuration when the package is installed.
-    |
-    */
-
     'models' => [
         'permission' => Spatie\Permission\Models\Permission::class,
         'role' => Spatie\Permission\Models\Role::class,
@@ -26,7 +15,6 @@ return [
     ],
 
     'cache' => [
-        // Default cache key used by the package
         'key' => env('SPATIE_PERMISSION_CACHE_KEY', 'spatie.permission.cache'),
         'expiration_time' => 24 * 60,
     ],

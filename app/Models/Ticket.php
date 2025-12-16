@@ -11,9 +11,6 @@ class Ticket extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    /**
-     * Register media collections for attachments.
-     */
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('attachments')

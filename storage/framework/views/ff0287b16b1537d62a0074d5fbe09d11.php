@@ -4,6 +4,13 @@ if (!isset($errors)) {
 }
 ?>
 
+<?php
+// Defensive guard to ensure $errors exists
+if (!isset($errors)) {
+    $errors = new \Illuminate\Support\ViewErrorBag();
+}
+?>
+
 
 
 <?php $__env->startSection('content'); ?>

@@ -23,6 +23,68 @@ docker compose exec app php artisan migrate --seed
 
 3. App will be available at: http://localhost:8080
 
+## Simple Setup (human-friendly)
+
+1. Copy env and install deps:
+
+```powershell
+cp .env.example .env
+docker compose exec app composer install
+```
+
+2. Generate key, migrate and seed (inside container):
+
+```powershell
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate --seed
+docker compose exec app php artisan storage:link
+```
+
+3. Open the app in your browser: http://localhost:8080
+
+If you prefer without Docker, run the same artisan commands in your local PHP environment.
+
+## Test data (quick list)
+
+- Manager user: **manager@example.com** / **password** (created by `RoleAndUserSeeder`)
+- Sample tickets: created by `TicketSeeder` when running `--seed` (if present)
+
+## Widget embed example (iframe)
+
+You can embed the widget page on any site using an iframe:
+
+```html
+<iframe src="https://your-domain.com/widget" width="400" height="600" frameborder="0"></iframe>
+```
+
+Adjust width/height as needed. The widget form supports file attachments.
+
+## API examples (very simple)
+
+Create a ticket (multipart form with optional file):
+
+```bash
+curl -X POST "http://localhost/api/tickets" \
+	-F "name=John Doe" \
+	-F "email=john@example.com" \
+	-F "phone=+12345678901" \
+	-F "subject=Help" \
+	-F "message=Please help" \
+	-F "files[]=@./doc.pdf"
+```
+
+Note: rate limit is **1 request per second** per phone or email. If you exceed it you'll get a 429.
+
+Get statistics (requires bearer token):
+
+```bash
+curl -H "Authorization: Bearer <TOKEN>" http://localhost/api/tickets/statistics
+```
+
+## API docs
+
+Interactive docs (Swagger) are available in `docs/openapi.yaml`.  You can open the static viewer at `docs/swagger_ui/index.html` after serving the `docs` folder. Use `scripts/serve_openapi_docs.ps1` to serve them locally.
+
 ## Widget embed example
 
 Embed the widget page with an iframe:

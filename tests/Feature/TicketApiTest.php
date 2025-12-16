@@ -31,7 +31,6 @@ class TicketApiTest extends TestCase
 
         $this->assertDatabaseHas('tickets', ['subject' => 'Test subject']);
 
-        // If medialibrary is installed, media entry should exist
         if (\Schema::hasTable('media')) {
             $this->assertDatabaseHas('media', ['file_name' => 'doc.pdf']);
         }

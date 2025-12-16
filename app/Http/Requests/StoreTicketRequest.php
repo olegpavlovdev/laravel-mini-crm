@@ -8,7 +8,7 @@ class StoreTicketRequest extends FormRequest
 {
     public function authorize()
     {
-        return true; // public widget
+        return true; 
     }
 
     public function rules()

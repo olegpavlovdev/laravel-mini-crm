@@ -17,7 +17,6 @@ class TicketService
 
     public function create(array $data, array $files = [])
     {
-        // Create or find customer by phone/email combination
         $customer = Customer::firstOrCreate([
             'phone' => $data['phone'],
         ], [
@@ -34,13 +33,11 @@ class TicketService
 
         $ticket = $this->repository->create($ticketData);
 
-        // Attach files via medialibrary if available; if it fails, fallback to storing file and creating media row
         if (!empty($files) && method_exists($ticket, 'addMedia')) {
             foreach ($files as $file) {
                 try {
                     $ticket->addMedia($file)->toMediaCollection('attachments');
                 } catch (\Throwable $e) {
-                    // Fallback: store file on public disk and create a minimal media record if media table exists
                     try {
                         $fileName = $file->getClientOriginalName();
                         $path = Storage::disk(config('media-library.disk_name', 'public'))->putFileAs('attachments', $file, $fileName);
@@ -63,7 +60,6 @@ class TicketService
                             ]);
                         }
                     } catch (\Throwable $e) {
-                        // swallow fallback errors to avoid breaking ticket creation
                     }
                 }
             }
