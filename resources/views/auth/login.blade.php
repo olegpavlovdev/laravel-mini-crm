@@ -4,6 +4,8 @@ if (!isset($errors)) {
 }
 @endphp
 
+{{-- Defensive guard added to avoid undefined $errors on some views (see commit history) --}}
+
 @extends('layouts.app')
 
 @section('content')
