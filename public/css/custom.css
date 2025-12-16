@@ -10,8 +10,9 @@
 
 /* Style prev/next buttons as circular arrows (they usually have aria-label attributes) */
 .pagination .page-link[aria-label] {
-  width: 44px;
-  height: 44px;
+  /* slightly larger circular controls for better touch targets */
+  width: 48px;
+  height: 48px;
   padding: 0;
   border-radius: 50%;
   display: inline-flex;
