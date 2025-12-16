@@ -1,0 +1,108 @@
+/* Custom UI tweaks for pagination, buttons, form controls, and date inputs */
+
+/* Center pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+}
+
+/* Style prev/next buttons as circular arrows (they usually have aria-label attributes) */
+.pagination .page-link[aria-label] {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  transition: background-color .12s ease, transform .08s ease;
+}
+
+/* Make page numbers slightly tighter */
+.pagination .page-link {
+  padding: .35rem .65rem;
+}
+
+/* Hover/focus visual */
+.pagination .page-link:hover,
+.pagination .page-link:focus {
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+  transform: translateY(-1px);
+}
+
+/* Highlight prev/next as prominent circular controls */
+.pagination .page-item:first-child .page-link,
+.pagination .page-item:last-child .page-link {
+  background-color: #0d6efd;
+  color: #fff;
+  border: 1px solid rgba(13,110,253,.22);
+  box-shadow: 0 2px 6px rgba(13,110,253,.12);
+}
+.pagination .page-item:first-child .page-link:hover,
+.pagination .page-item:last-child .page-link:hover {
+  background-color: #0b5ed7;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Buttons */
+.btn {
+  border-radius: .375rem;
+}
+.btn-sm {
+  padding: .25rem .5rem;
+  font-size: .875rem;
+}
+
+/* Form controls and inputs */
+.form-control,
+input[type="date"] {
+  font-size: .95rem;
+  padding: .375rem .75rem;
+  height: calc(1.5em + .75rem + 2px);
+  border-radius: .375rem;
+  box-sizing: border-box;
+}
+
+.form-control:focus,
+input[type="date"]:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 .2rem rgba(13,110,253,.15);
+}
+
+.form-control::placeholder {
+  color: #6c757d;
+  opacity: 1;
+}
+
+/* Date input specific tweaks (Webkit) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.9;
+  filter: none;
+  margin-right: 6px;
+}
+
+/* Make select boxes consistent */
+.form-select {
+  height: calc(1.5em + .75rem + 2px);
+  padding: .375rem .75rem;
+}
+
+/* Small helper for compact filter rows */
+.form-inline .form-control {
+  display: inline-block;
+  width: auto;
+  vertical-align: middle;
+}
+
+.hidden .sm\:flex-1.sm\:flex.sm\:items-center.sm\:justify-between {
+  display: none;
+}
+
+nav[role="navigation"] div:nth-child(2) {
+  display: none;
+}
