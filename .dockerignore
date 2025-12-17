@@ -1,8 +1,23 @@
+# Project artifacts and backups
+.cleanup_backups
+dist
+
+# Dependency directories
 vendor
 node_modules
+
+# Environment and VCS
 .env
 .git
+.DS_Store
+
+# Local storage and logs
+public/storage
 storage/logs
 storage/framework/cache
 storage/framework/sessions
 storage/framework/views
+
+# IDE files
+.vscode
+.idea

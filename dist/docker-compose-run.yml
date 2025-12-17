@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  app:
+    image: laravel-mini-crm:prod-v1.0.0
+    environment:
+      - APP_ENV=local
+      - DB_HOST=db
+      - DB_DATABASE=crm
+      - DB_USERNAME=crm
+      - DB_PASSWORD=secret
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: crm
+      MYSQL_USER: crm
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata: {}
